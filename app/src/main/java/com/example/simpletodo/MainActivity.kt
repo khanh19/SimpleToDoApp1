@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.apache.commons.io.FileUtils
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
             override fun onItemLongClicked(position: Int) {
                 listOfTasks.removeAt(position)
                 adapter.notifyDataSetChanged()
-
+                Toast.makeText(applicationContext, "Item was removed successfully", Toast.LENGTH_SHORT).show()
                 saveItems()
             }
         }
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity() {
 
             //3. Reset text field
             input.setText("")
-
+            Toast.makeText(applicationContext, "Item was added", Toast.LENGTH_SHORT).show()
             saveItems()
         }
 
