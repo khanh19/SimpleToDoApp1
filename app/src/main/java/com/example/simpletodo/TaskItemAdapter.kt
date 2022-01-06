@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class TaskItemAdapter(val listOfItems: List<String>, val longClickListener: OnLongClickListener): RecyclerView.Adapter<TaskItemAdapter.ViewHolder>() {
+class TaskItemAdapter(val listOfItems: List<String>, val longClickListener: OnLongClickListener, val clickListener: OnClickListener): RecyclerView.Adapter<TaskItemAdapter.ViewHolder>() {
     interface OnLongClickListener{
         fun onItemLongClicked(position: Int)
+    }
+    interface OnClickListener{
+        fun onItemClicked(position: Int)
     }
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val textView: TextView
@@ -17,6 +20,10 @@ class TaskItemAdapter(val listOfItems: List<String>, val longClickListener: OnLo
             textView = itemView.findViewById(android.R.id.text1)
             itemView.setOnLongClickListener {
                 longClickListener.onItemLongClicked(adapterPosition)
+                true
+            }
+            itemView.setOnClickListener{
+                clickListener.onItemClicked(adapterPosition)
                 true
             }
 

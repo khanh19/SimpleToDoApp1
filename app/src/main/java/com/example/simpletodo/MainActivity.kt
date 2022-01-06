@@ -1,5 +1,6 @@
 package com.example.simpletodo
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -29,13 +30,27 @@ class MainActivity : AppCompatActivity() {
                 saveItems()
             }
         }
+
+
+        val  clickListener = object: TaskItemAdapter.OnClickListener{
+            override fun onItemClicked(position: Int) {
+              if (listOfTasks[position] != null){
+                  val itemValue = listOfTasks[position]
+                  Intent(applicationContext, Edit::class.java).also{
+                      it.putExtra("EXTRA_VALUE", itemValue)
+                     startActivity(it)
+                  }
+              }
+            }
+        }
+
         loadItems()
 
         //look up recyclerview in layout
         val recyclerView = findViewById<RecyclerView>(R.id.rv)
 
         // Create adapter passing in the sample user data
-        adapter = TaskItemAdapter(listOfTasks, onLongClickListener)
+        adapter = TaskItemAdapter(listOfTasks, onLongClickListener, clickListener)
         // Attach the adapter to the recyclerview to populate items
         recyclerView.adapter = adapter
 
@@ -52,14 +67,15 @@ class MainActivity : AppCompatActivity() {
             adapter.notifyItemInserted(listOfTasks.size - 1)
 
             //3. Reset text field
+            saveItems()
             input.setText("")
             Toast.makeText(applicationContext, "Item was added", Toast.LENGTH_SHORT).show()
-            saveItems()
+
         }
-
-
-
     }
+
+
+
     // Data persistence by reading and writing from a file.
     fun getDataFile(): File {
         return File(filesDir, "data.txt")
@@ -85,6 +101,10 @@ class MainActivity : AppCompatActivity() {
             ioException.printStackTrace()
         }
     }
+
+
+
+
 
 
 }
